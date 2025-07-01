@@ -24,7 +24,8 @@ def main():
         print("=======================================================================")
         print("➡️  Type -> clone <- for clone a repo\n")
         print("➡️  Type -> pull <- for pull latest commit\n")
-        print("➡️  Type -> add <- for add all file in github\n")
+        print("➡️  Type -> add <- for add all file in git\n")
+        print("➡️  Type -> status <- for check status of git\n")
         print("➡️  Type -> Exit <- for exit from agent\n")
         value = input("➡️  Enter your Request => ").strip().lower()
         match value:
@@ -44,7 +45,7 @@ def main():
 
             # Ask to pull repo
             case "pull":
-                cwd = input("➡️  you are working with current working directory? y/n => ")
+                cwd = input("➡️  you are working with current working directory? y/n => ").strip().lower()
                 if(cwd=='y'):
                     repo_name = os.getcwd()
                 else:
@@ -61,26 +62,42 @@ def main():
 
             # Ask for Add files in git
             case "add":
-                add = input("➡️  you Want to add all files? y/n => ")
-                if(add==1):
-                    result = run_command(["git add","."],cwd = os.getcwd())
+                add = input("➡️  you Want to add all files? y/n => ").strip().lower()
+                if(add=='y'):
+                    result = run_command(["git","add","."],cwd = os.getcwd())
                     if result:
                         print("✅  git add success")
                     else:
                         print("❌ Error running check cwd")
                 else:
-                    file = input("➡️  Enter file name => ")
+                    file = input("➡️  Enter file name => ").strip().lower()
                     while True:
                         result = run_command(["git","add",file],os.getcwd())
                         if result:
                             print("✅  git add success", file)
                         else:
                             print("❌ Error running check cwd")
-                        adds = input("➡️  Want to add one more file y/n => ")
+                        adds = input("➡️  Want to add one more file y/n => ").strip().lower()
                         if (adds=='n'):
                             break
-                
 
+            # Ask status
+            case "status":
+                que = input("➡️  want to check status of cwd y/n => ")
+                if(que=='y'):
+                    result = run_command(["git","status"],cwd = os.getcwd())
+                    if result:
+                        print("✅  git status success")
+                    else:
+                        print("❌ Error running check cwd")
+                else:
+                    status = input("➡️ Enter path of folder to check status => ")
+                    result = run_command(["git","status"],cwd = status)
+                    if result:
+                        print("✅  git status success")
+                    else:
+                        print("❌ Error running check cwd")
+            
                 
             # exit from repo
             case "exit":
