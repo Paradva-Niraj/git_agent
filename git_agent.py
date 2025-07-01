@@ -26,6 +26,7 @@ def main():
         print("➡️  Type -> pull <- for pull latest commit\n")
         print("➡️  Type -> add <- for add all file in git\n")
         print("➡️  Type -> status <- for check status of git\n")
+        print("➡️  Type -> C&P <- for commit and push to github\n")
         print("➡️  Type -> Exit <- for exit from agent\n")
         value = input("➡️  Enter your Request => ").strip().lower()
         match value:
@@ -98,7 +99,25 @@ def main():
                     else:
                         print("❌ Error running check cwd")
             
-                
+            #ask commit msg and commit
+            case "c&p":
+                result = run_command(["git","add","."],cwd = os.getcwd())
+                if result:
+                    print("✅  git add success")
+                else:
+                    print("❌ Error running check cwd")
+                message = input("📝 Enter commit message: ").strip()
+                result = run_command(["git", "commit", "-m", message], cwd=os.getcwd())
+                if result:
+                    print("✅ Commit successful.")
+                    result = run_command(["git","push"])
+                    if(result):
+                        print("✅ Push successful.")
+                    else:
+                        print("❌ Push failed. Did you forget to `commit` files?")
+                else:
+                    print("❌ Commit failed. Did you forget to `add` files?")
+
             # exit from repo
             case "exit":
                 print("✅ Done. Exiting Git Agent.")
