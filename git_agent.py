@@ -1,6 +1,8 @@
 import subprocess
 import os
 import shutil
+from dotenv import load_dotenv
+from openai import OpenAI
 
 #check git is install or not if not intall that
 git = 0
@@ -101,12 +103,53 @@ def main():
             
             #ask commit msg and commit
             case "c&p":
+                load_dotenv()
+                api_key = os.getenv("OPENAI_API_KEY")
                 result = run_command(["git","add","."],cwd = os.getcwd())
                 if result:
                     print("✅  git add success")
                 else:
                     print("❌ Error running check cwd")
-                message = input("📝 Enter commit message: ").strip()
+#generating commit from gpt
+                limit_lines = 100
+                result = subprocess.run( ["git", "diff", "--cached", "--name-only"], capture_output=True, text=True, encoding="utf-8", errors="replace")
+                diff = result.stdout.strip().splitlines()
+
+                if len(diff) > limit_lines:
+                    diff = diff[:limit_lines]
+                    diff.append("... [diff truncated]")
+
+                diff_text = "\n".join(diff)
+
+                prompt = f"""You are an assistant that writes helpful Git commit messages not do much process just analys this different and give a normal commit messag.
+
+                    Here is a git diff of staged changes:
+
+                    {diff_text}
+
+                    Write a concise, meaningful commit message: """
+                
+                client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+                try:
+                    response = client.chat.completions.create(
+                        model="gpt-3.5-turbo",
+                        messages=[
+                            {"role": "user", "content": prompt}
+                        ],
+                        temperature=0.4,
+                        max_tokens=100,
+                    )
+                    message = response["choices"][0]["message"]["content"].strip()
+                    print(f"\n🤖 Suggested Commit Message:\n\n📝 {message}\n")
+                except Exception as e:
+                    pass
+
+                confirm = input("✅ Use this message? (y/n): ").strip().lower()
+
+                if(confirm == 'y'):
+                    pass
+                else:
+                    message = input("📝 Enter commit message: ").strip()
                 result = run_command(["git", "commit", "-m", message], cwd=os.getcwd())
                 if result:
                     print("✅ Commit successful.")
