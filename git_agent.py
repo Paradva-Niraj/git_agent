@@ -67,9 +67,14 @@ def main():
 
             # Ask for Add files in git
             case "a":
+                cwd = input("➡️  you are working with current working directory? y/n => ").strip().lower()
+                if(cwd=='y'):
+                    repo_name = os.getcwd()
+                else:
+                    repo_name = input("📁 Enter local folder path of repo: ").strip()
                 add = input("➡️  you Want to add all files? y/n => ").strip().lower()
                 if(add=='y'):
-                    result = run_command(["git","add","."],cwd = os.getcwd())
+                    result = run_command(["git","add","."],cwd = repo_name)
                     if result:
                         print("✅  git add success")
                     else:
@@ -88,9 +93,14 @@ def main():
 
             # Ask status
             case "s":
+                cwd = input("➡️  you are working with current working directory? y/n => ").strip().lower()
+                if(cwd=='y'):
+                    repo_name = os.getcwd()
+                else:
+                    repo_name = input("📁 Enter local folder path of repo: ").strip()
                 que = input("➡️  want to check status of cwd y/n => ")
                 if(que=='y'):
-                    result = run_command(["git","status"],cwd = os.getcwd())
+                    result = run_command(["git","status"],cwd = os.repo_name)
                     if result:
                         print("✅  git status success")
                     else:
@@ -106,14 +116,20 @@ def main():
             #ask commit msg and commit
             case "c&p":
                 load_dotenv()
-                result = run_command(["git","add","."],cwd = os.getcwd())
+                cwd = input("➡️  you are working with current working directory? y/n => ").strip().lower()
+                if(cwd=='y'):
+                    repo_name = os.getcwd()
+                else:
+                    repo_name = input("📁 Enter local folder path of repo: ").strip()
+                result = run_command(["git","add","."],cwd = repo_name)
                 if result:
                     print("✅  git add success")
                 else:
                     print("❌ Error running check cwd")
 #generating commit from gimini
+
                 limit_lines = 100
-                result = subprocess.run( ["git", "diff", "--cached", "--name-only"], capture_output=True, text=True, encoding="utf-8", errors="replace")
+                result = subprocess.run( ["git", "diff", "--cached",], capture_output=True, text=True, encoding="utf-8", errors="replace", cwd=repo_name)
                 diff = result.stdout.strip().splitlines()
 
                 if len(diff) > limit_lines:
@@ -122,7 +138,9 @@ def main():
 
                 diff_text = "\n".join(diff)
 
-                prompt = f"""You are an assistant that writes helpful Git commit messages not do much process just analys this different and give a normal commit message.
+                # print(diff)
+
+                prompt = f"""You are an assistant that writes helpful Git commit messages not do much process just analys this different and give a normal commit message with just half line not much more in responce.
 
                     Here is a git diff of staged changes:
 
@@ -149,10 +167,10 @@ def main():
                     pass
                 else:
                     message = input("📝 Enter commit message: ").strip()
-                result = run_command(["git", "commit", "-m", message], cwd=os.getcwd())
+                result = run_command(["git", "commit", "-m", message], cwd=repo_name)
                 if result:
                     print("✅ Commit successful.")
-                    result = run_command(["git","push"])
+                    result = run_command(["git","push"],cwd=repo_name)
                     if(result):
                         print("✅ Push successful.")
                     else:
