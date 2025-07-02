@@ -139,7 +139,7 @@ def main():
                     )
 
                     message = response.text.strip()
-                    print(f"\n🤖 Suggested Commit Message:\n\n📝 {message}\n")
+                    print(f"\n🤖 Suggested Commit Message:📝 {message}\n")
                 except Exception as e:
                     print(e)
 
