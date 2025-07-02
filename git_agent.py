@@ -26,16 +26,16 @@ def main():
     print("\n🧠 Welcome to Git Agent")
     while(1):
         print("=======================================================================")
-        print("➡️  Type -> clone <- for clone a repo\n")
-        print("➡️  Type -> pull <- for pull latest commit\n")
-        print("➡️  Type -> add <- for add all file in git\n")
-        print("➡️  Type -> status <- for check status of git\n")
+        print("➡️  Type -> c <- for clone a repo\n")
+        print("➡️  Type -> p <- for pull latest commit\n")
+        print("➡️  Type -> a <- for add all file in git\n")
+        print("➡️  Type -> s <- for check status of git\n")
         print("➡️  Type -> C&P <- for commit and push to github\n")
-        print("➡️  Type -> Exit <- for exit from agent\n")
+        print("➡️  Type -> E <- for exit from agent\n")
         value = input("➡️  Enter your Request => ").strip().lower()
         match value:
             # Ask to clone repo
-            case "clone":
+            case "c":
                 repo_url = input("🔗 Enter GitHub repo URL: ").strip()
                 folder = repo_url.split('/')[-1].replace(".git", "")
                 if os.path.exists(folder):
@@ -49,7 +49,7 @@ def main():
                         print("❌ Error running check repo url")
 
             # Ask to pull repo
-            case "pull":
+            case "p":
                 cwd = input("➡️  you are working with current working directory? y/n => ").strip().lower()
                 if(cwd=='y'):
                     repo_name = os.getcwd()
@@ -66,7 +66,7 @@ def main():
                     print("⚠️ Folder not found. Clone the repo first.")    
 
             # Ask for Add files in git
-            case "add":
+            case "a":
                 add = input("➡️  you Want to add all files? y/n => ").strip().lower()
                 if(add=='y'):
                     result = run_command(["git","add","."],cwd = os.getcwd())
@@ -87,7 +87,7 @@ def main():
                             break
 
             # Ask status
-            case "status":
+            case "s":
                 que = input("➡️  want to check status of cwd y/n => ")
                 if(que=='y'):
                     result = run_command(["git","status"],cwd = os.getcwd())
@@ -222,7 +222,7 @@ def main():
 #                     print("❌ Commit failed. Did you forget to `add` files?")
 
             # exit from repo
-            case "exit":
+            case "e":
                 print("✅ Done. Exiting Git Agent.")
                 break
             case _:
