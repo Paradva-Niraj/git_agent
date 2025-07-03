@@ -1,0 +1,11 @@
+LICENSE
+README.md
+setup.py
+git_agent/__init__.py
+git_agent/git_agent.py
+git_agent.egg-info/PKG-INFO
+git_agent.egg-info/SOURCES.txt
+git_agent.egg-info/dependency_links.txt
+git_agent.egg-info/entry_points.txt
+git_agent.egg-info/requires.txt
+git_agent.egg-info/top_level.txt

@@ -1,0 +1,2 @@
+[console_scripts]
+git-agent = git_agent.git_agent:main
