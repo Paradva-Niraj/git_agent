@@ -20,15 +20,17 @@
 
 ## 📦 Installation
 
-Install directly from **PyPI**:
 
-```bash
-pip install git-agent
+```bash```
+
+## how to use
+```
+  pip install git+https://github.com/<your-username>/paradva-niraj-git_agent.git
+  git-agent
+```
 
 
 📦 Package Info
 PyPI Name: git-agent
 Command Line Entry Point: git-agent
 Python Module: git_agent.git_agent
-
-```
