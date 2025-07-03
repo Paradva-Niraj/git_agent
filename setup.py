@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as f:
     description = f.read()
 
 setup(
-    name='git-agent-niraj-dev',
+    name='git-agent',
     version='1.4.1',
     packages=find_packages(),
     install_requires=[
