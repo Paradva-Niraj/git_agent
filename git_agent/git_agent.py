@@ -3,9 +3,15 @@ import os
 import shutil
 from dotenv import load_dotenv
 from openai import OpenAI #when open ai api is use
-from google import genai #when gimini api is use
+    #when gimini api is use
+try:
+    import google.generativeai as genai
+except ImportError:
+    genai = None 
 
-
+if genai is None:
+    print("❌ Gemini is not available. Please install `google-generativeai`.")
+    return
 #check git is install or not if not intall that
 git = 0
 if shutil.which("git"):
