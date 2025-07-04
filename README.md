@@ -25,7 +25,7 @@
 
 ## how to use
 ```
-  pip install git+https://github.com/<your-username>/paradva-niraj-git_agent.git
+  pip install git+https://github.com/Paradva-Niraj/git_agent.git
   git-agent
 ```
 
