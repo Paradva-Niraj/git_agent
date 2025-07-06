@@ -34,3 +34,4 @@
 PyPI Name: git-agent
 Command Line Entry Point: git-agent
 Python Module: git_agent.git_agent
+manage your code of github easy without hard command
