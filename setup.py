@@ -5,11 +5,10 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name='git-agent',
-    version='1.0.1',
+    version='1.0.2',
     packages=find_packages(),
    install_requires=[
     "python-dotenv",
-    "openai",
     "google-generativeai"
     ],
     entry_points={

@@ -2,8 +2,8 @@ import subprocess
 import os
 import shutil
 from dotenv import load_dotenv
-from openai import OpenAI #when open ai api is use
-    #when gimini api is use
+# from openai import OpenAI #when open ai api is use
+#     #when gimini api is use
 import google.generativeai as genai
 
 
@@ -148,14 +148,13 @@ def main():
 
                     Write a concise, meaningful commit message: """
                 
-                client = genai.Client()
                 try:
                     print("📝 Wait for Commit msg")
-                    response = client.models.generate_content(
-                    model="gemini-2.5-flash",
-                    contents=prompt
-                    )
+                    genai.configure(api_key=os.getenv("GEMINI_API_KEY")) 
 
+                    model = genai.GenerativeModel("gemini-1.5-flash")
+
+                    response = model.generate_content(prompt)
                     message = response.text.strip()
                     print(f"\n🤖 Suggested Commit Message:📝 {message}\n")
                 except Exception as e:

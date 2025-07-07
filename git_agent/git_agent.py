@@ -2,8 +2,8 @@ import subprocess
 import os
 import shutil
 from dotenv import load_dotenv
-from openai import OpenAI #when open ai api is use
-    #when gimini api is use
+# from openai import OpenAI #when open ai api is use
+#     #when gimini api is use
 import google.generativeai as genai
 
 
