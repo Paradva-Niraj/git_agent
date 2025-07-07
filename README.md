@@ -19,14 +19,27 @@
 ---
 
 ## 📦 Installation
-
-
-```bash```
-
-## how to use
 ```
   pip install git+https://github.com/Paradva-Niraj/git_agent.git
+```
+## use
+```
   git-agent
+```
+
+## update with new version
+```
+pip install --upgrade git+https://github.com/Paradva-Niraj/git_agent.git
+```
+
+## force to update when minor changes
+```
+pip install --upgrade --force-reinstall git+https://github.com/Paradva-Niraj/git_agent.git
+```
+
+## uninstall package
+```
+pip uninstall git-agent -y
 ```
 
 
