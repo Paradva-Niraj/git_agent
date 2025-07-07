@@ -1,41 +1,22 @@
 import subprocess
 import os
 import shutil
-from pathlib import Path
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 import google.generativeai as genai
 
-# Load .env from current dir, script dir, or home dir
-env_paths = [
-    Path.cwd() / ".env",
-    Path(__file__).parent / ".env",
-    Path.home() / ".git_agent_env"
-]
+dotenv_loaded = load_dotenv(find_dotenv())
 
-for path in env_paths:
-    if path.exists():
-        load_dotenv(dotenv_path=path)
-        break
+if not dotenv_loaded:
+    env_paths = [
+        Path.cwd() / ".env",
+        Path(__file__).parent / ".env",
+        Path.home() / ".git_agent_env"
+    ]
+    for path in env_paths:
+        if path.exists():
+            load_dotenv(dotenv_path=path)
+            break
 
-api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
-
-if not api_key:
-    print("""
-❌ No API Key Found!
-
-Please either:
-  1. Create a `.env` file with: GEMINI_API_KEY=your-api-key
-     - You can place it in the current folder, script folder, or ~/.git_agent_env
-  2. Or run:
-     export GEMINI_API_KEY=your-api-key
-  3. Or set up ADC: https://ai.google.dev/gemini-api/docs/oauth
-""")
-    exit(1)
-
-
-
-# Now it's safe to use the key
-genai.configure(api_key=api_key)
 
 git = 0
 if shutil.which("git"):
