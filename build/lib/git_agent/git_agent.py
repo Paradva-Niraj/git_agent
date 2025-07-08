@@ -1,22 +1,10 @@
 import subprocess
 import os
 import shutil
-from dotenv import load_dotenv, find_dotenv
+from dotenv import load_dotenv
 import google.generativeai as genai
 
-dotenv_loaded = load_dotenv(find_dotenv())
-
-if not dotenv_loaded:
-    env_paths = [
-        Path.cwd() / ".env",
-        Path(__file__).parent / ".env",
-        Path.home() / ".git_agent_env"
-    ]
-    for path in env_paths:
-        if path.exists():
-            load_dotenv(dotenv_path=path)
-            break
-
+load_dotenv()
 
 git = 0
 if shutil.which("git"):
