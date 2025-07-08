@@ -1,10 +1,7 @@
 import subprocess
 import os
 import shutil
-from dotenv import load_dotenv
-import google.generativeai as genai
-
-load_dotenv()
+import requests
 
 git = 0
 if shutil.which("git"):
@@ -23,7 +20,7 @@ def main():
 
     value = "welcome"
     print("\n🧠 Welcome to Git Agent")
-    while(1):
+    while(True):
         print("=======================================================================")
         print("➡️  Type -> c <- for clone a repo\n")
         print("➡️  Type -> p <- for pull latest commit\n")
@@ -79,7 +76,7 @@ def main():
                     else:
                         print("❌ Error running check cwd")
                 else:
-                    file = input("➡️  Enter file name => ").strip().lower()
+                    file = input("➡️  Enter file name => ").strip()
                     while True:
                         result = run_command(["git","add",file],os.getcwd())
                         if result:
@@ -99,7 +96,7 @@ def main():
                     repo_name = input("📁 Enter local folder path of repo: ").strip()
                 que = input("➡️  want to check status of cwd y/n => ")
                 if(que=='y'):
-                    result = run_command(["git","status"],cwd = os.repo_name)
+                    result = run_command(["git","status"],cwd = repo_name)
                     if result:
                         print("✅  git status success")
                     else:
@@ -136,27 +133,47 @@ def main():
 
                 diff_text = "\n".join(diff)
 
+                
+                # new backend code
+                backend_url =  "https://git-agent-backend.onrender.com"
+                response = requests.post(f"{backend_url}/generate-commit", json={"diff": diff_text})
+                if response.status_code == 200:
+                    data = response.json()
+                    if "message" in data:
+                        message = data["message"]
+                        print(f"\n🤖 Suggested Commit Message:📝 {message}\n")
+                    else:
+                        print("❌ Error:", data.get("error", "Unknown error"))
+                        message = input("📝 Enter commit message manually: ").strip()
+                else:
+                    print("❌ Backend failed. Enter commit message manually.")
+                    message = input("📝 Enter commit message manually: ").strip()
+
+
+
+
+
                 # print(diff)
 
-                prompt = f"""You are an assistant that writes helpful Git commit messages not do much process just analys this different and give a normal commit message with just half line not much more in responce.
+                # prompt = f"""You are an assistant that writes helpful Git commit messages not do much process just analys this different and give a normal commit message with just half line not much more in responce.
 
-                    Here is a git diff of staged changes:
+                #     Here is a git diff of staged changes:
 
-                    {diff_text}
+                #     {diff_text}
 
-                    Write a concise, meaningful commit message: """
+                #     Write a concise, meaningful commit message: """
                 
-                try:
-                    print("📝 Wait for Commit msg")
-                    genai.configure(api_key=os.getenv("GEMINI_API_KEY")) 
+                # try:
+                #     print("📝 Wait for Commit msg")
+                #     genai.configure(api_key=os.getenv("GEMINI_API_KEY")) 
 
-                    model = genai.GenerativeModel("gemini-1.5-flash")
+                #     model = genai.GenerativeModel("gemini-1.5-flash")
 
-                    response = model.generate_content(prompt)
-                    message = response.text.strip()
-                    print(f"\n🤖 Suggested Commit Message:📝 {message}\n")
-                except Exception as e:
-                    print(e)
+                #     response = model.generate_content(prompt)
+                #     message = response.text.strip()
+                #     print(f"\n🤖 Suggested Commit Message:📝 {message}\n")
+                # except Exception as e:
+                #     print(e)
 
                 confirm = input("✅ Use this message? (y/n): ").strip().lower()
 
