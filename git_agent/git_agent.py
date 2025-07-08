@@ -1,11 +1,7 @@
 import subprocess
 import os
 import shutil
-from dotenv import load_dotenv
-import google.generativeai as genai
 import requests
-
-load_dotenv()
 
 git = 0
 if shutil.which("git"):
@@ -139,8 +135,8 @@ def main():
 
                 
                 # new backend code
-
-                response = requests.post("http://127.0.0.1:8000/generate-commit", json={"diff": diff_text})
+                backend_url =  "https://git-agent-backend.onrender.com"
+                response = requests.post(f"{backend_url}/generate-commit", json={"diff": diff_text})
                 if response.status_code == 200:
                     data = response.json()
                     if "message" in data:
