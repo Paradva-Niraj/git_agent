@@ -8,7 +8,7 @@ if shutil.which("git"):
     git = 1
     # print("Git is installed!")
 else:
-    print("Git is NOT installed. Please install it first.")
+    print("Git is NOT installed. Please install it first. from https://git-scm.com/downloads")
 
 def run_command(command, cwd=None):
     result = subprocess.run(command, cwd=cwd)
@@ -119,8 +119,10 @@ def main():
                 result = run_command(["git","add","."],cwd = repo_name)
                 if result:
                     print("✅  git add success")
+                    break
                 else:
                     print("❌ Error running check cwd")
+                    break
 #generating commit from gimini
 
                 limit_lines = 100
